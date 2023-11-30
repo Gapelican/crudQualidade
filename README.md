@@ -1,3 +1,1 @@
-# crudQualidade
-# crudQualidade
-# crudQualidade
+# crud qualidade
