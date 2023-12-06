@@ -11,6 +11,8 @@ jobs:
     steps:
       ## [Common_CI_Step]
       - uses: actions/checkout@v3
+      - name: "Debug"
+        run: "ls -la"
       - name: "Lint"
         run: "npm run lint"
         
