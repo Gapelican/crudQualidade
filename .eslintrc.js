@@ -5,15 +5,14 @@ module.exports = {
     es2021: true,
     node: true,
     "cypress/globals": true,
-    "chai-friendly": true,
   },
   plugins: [
     "react",
     "prettier",
     "@typescript-eslint",
     "cypress",
-    "chai-friendly",
     "no-only-tests",
+    "chai-friendly",
   ],
   extends: [
     "eslint:recommended",
@@ -39,5 +38,7 @@ module.exports = {
     "no-only-tests/no-only-tests": "error",
     "no-console": ["error", { allow: ["warn", "error"] }],
     "react/no-unknown-property": ["error", { ignore: ["jsx", "global"] }],
+    "no-unused-expressions": 0,
+    "chai-friendly/no-unused-expressions": 2,
   },
 };
