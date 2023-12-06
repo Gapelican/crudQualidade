@@ -71,7 +71,7 @@ async function toggleDone(todoId: string): Promise<Todo> {
     });
     const serverResponseParsed = ServerResponseSchema.safeParse(serverResponse);
     if (!serverResponseParsed.success) {
-      throw new Error(`Failed to update TODO with id ${todoId}`);
+      throw new Error(`Failed to update TODO with id ${todoId}!!!!!!`);
     }
 
     const updatedTodo = serverResponseParsed.data.todo;
