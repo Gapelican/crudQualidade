@@ -47,7 +47,7 @@ export function read(): Array<Todo> {
   return db.todos;
 }
 
-function update(id: randomUUID, partialTodo: Partial<Todo>): Todo {
+export function update(id: randomUUID, partialTodo: Partial<Todo>): Todo {
   let updateTodo;
   const todos = read();
   todos.forEach((currentTodo) => {
@@ -75,13 +75,13 @@ function update(id: randomUUID, partialTodo: Partial<Todo>): Todo {
   return updateTodo;
 }
 
-function updateContentById(id: randomUUID, content: string): Todo {
+export function updateContentById(id: randomUUID, content: string): Todo {
   return update(id, {
     content,
   });
 }
 
-function deleteById(id: randomUUID) {
+export function deleteById(id: randomUUID) {
   const todos = read();
 
   const todosWithoutOne = todos.filter((todo) => {

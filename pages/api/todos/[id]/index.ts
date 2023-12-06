@@ -5,8 +5,8 @@ export default function handler(
   request: NextApiRequest,
   response: NextApiResponse
 ) {
-  if (request.method === "PUT") {
-    todoController.toggleDone(request, response);
+  if (request.method === "DELETE") {
+    todoController.deleteById(request, response);
     return;
   }
 
@@ -16,5 +16,3 @@ export default function handler(
     },
   });
 }
-
-// localhost:3000/api/todos/d5e0f4db-8f5e-4179-9719-6d02b5c7407f/toggle-done
