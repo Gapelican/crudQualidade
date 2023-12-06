@@ -9,7 +9,9 @@ jobs:
   lint: 
     runs-on: ubuntu-latest
     steps:
+      ## [Common_CI_Step]
+      - uses: actions/checkout@v3
       - name: "Lint"
-        run: "echo 'XABLAUUUUUUdU'"
+        run: "npm run lint"
         
       
