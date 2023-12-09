@@ -1,16 +1,12 @@
-name: "[CD] Continuous Delivery"
+name: "[CI] Continuous Integration"
 
-# on:
-#   push:
-#     branches:
-#       - main
-
+# Sempre que tiver um commit ou um PR for aberto
 on:
   pull_request:
     types: [opened, synchronize]
 
 jobs: 
-  deploy: 
+  lint: 
     runs-on: ubuntu-latest
     steps:
       ## [Common_CI_Step]
@@ -19,6 +15,16 @@ jobs:
         run: "ls -la"
       - name: "Install Dependencies"
         run: "npm install"
-      - name: "Deploy"
-        run: "npx vercel --prod --token=8SEXsWSCapbDbhzNH7Ssnu7W"
-
+      - name: "Lint"
+        run: "npm run lint"
+  test:
+    runs-on: ubuntu-latest
+    container: cypress/browsers:node18.12.0-chrome107
+    steps:
+      - uses: actions/checkout@v3
+      - name: "Install Dependencies"
+        run: "npm install"
+      - name: "Test"
+        run: "npm run test"
+        
+      
