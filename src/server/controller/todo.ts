@@ -26,7 +26,7 @@ async function get(req: NextApiRequest, res: NextApiResponse) {
     return;
   }
 
-  const output = todoRepository.get({
+  const output = await todoRepository.get({
     page: page,
     limit: limit,
   });
@@ -55,11 +55,18 @@ async function create(req: NextApiRequest, res: NextApiResponse) {
     return;
   }
   // Here we have the data!
-  const createdTodo = await todoRepository.createByContent(body.data.content);
-
-  res.status(201).json({
-    todo: createdTodo,
-  });
+  try {
+    const createdTodo = await todoRepository.createByContent(body.data.content);
+    res.status(201).json({
+      todo: createdTodo,
+    });
+  } catch {
+    res.status(400).json({
+      error: {
+        message: "Failed to create TODO",
+      },
+    });
+  }
 }
 
 async function toggleDone(req: NextApiRequest, res: NextApiResponse) {
