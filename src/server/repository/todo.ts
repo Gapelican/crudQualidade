@@ -100,6 +100,9 @@ async function getTodoById(id: string): Promise<Todo> {
 
 async function toggleDone(id: string): Promise<Todo> {
   const todo = await getTodoById(id);
+  // eslint-disable-next-line no-console
+  console.log(todo);
+
   const { data, error } = await supabase
     .from("todos")
     .update({
@@ -111,9 +114,10 @@ async function toggleDone(id: string): Promise<Todo> {
 
   if (error) throw new Error("Failed to get todo by id");
 
-  const parsedData = TodoSchema.parse(data);
+  const parsedData = TodoSchema.safeParse(data);
+  if (!parsedData.success) throw new Error("Failed to return updated todo");
 
-  return parsedData;
+  return parsedData.data;
   // const ALL_TODOS = read();
   // const todo = ALL_TODOS.find((todo) => todo.id === id);
   // if (!todo) throw new Error(`Todo with id "${id}" not found`);

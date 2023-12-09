@@ -5,9 +5,6 @@ export default async function handler(
   request: NextApiRequest,
   response: NextApiResponse
 ) {
-  // eslint-disable-next-line no-console
-  console.log(request.method);
-
   if (request.method === "GET") {
     await todoController.get(request, response);
     return;

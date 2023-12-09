@@ -75,6 +75,7 @@ async function toggleDone(todoId: string): Promise<Todo> {
     }
 
     const updatedTodo = serverResponseParsed.data.todo;
+
     return updatedTodo;
   }
 
