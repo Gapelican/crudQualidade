@@ -1,8 +1,6 @@
 import { todoRepository } from "@server/repository/todo";
 import { z as schema } from "zod";
-import { NextApiRequest, NextApiResponse } from "next";
 import { HttpNotFoundError } from "@server/infra/erros";
-import { stringify } from "querystring";
 
 async function get(req: Request) {
   const { searchParams } = new URL(req.url);
@@ -110,68 +108,101 @@ async function create(req: Request) {
   }
 }
 
-async function toggleDone(req: NextApiRequest, res: NextApiResponse) {
-  const todoId = req.query.id;
+async function toggleDone(req: Request, id: string) {
+  const todoId = id;
 
   if (!todoId || typeof todoId !== "string") {
-    res.status(400).json({
-      error: {
-        message: "You must to provide a string ID",
-      },
-    });
-    return;
+    return new Response(
+      JSON.stringify({
+        error: {
+          message: "You must to provide a string ID",
+        },
+      }),
+      {
+        status: 400,
+      }
+    );
   }
 
   try {
     const updatedTodo = await todoRepository.toggleDone(todoId);
 
-    res.status(200).json({
-      todo: updatedTodo,
-    });
+    return new Response(
+      JSON.stringify({
+        todo: updatedTodo,
+      }),
+      {
+        status: 200,
+      }
+    );
   } catch (error) {
     if (error instanceof Error) {
-      res.status(404).json({
-        error: {
-          message: error.message,
-        },
-      });
+      return new Response(
+        JSON.stringify({
+          error: {
+            message: error.message,
+          },
+        }),
+        {
+          status: 404,
+        }
+      );
     }
   }
 }
 
-async function deleteById(req: NextApiRequest, res: NextApiResponse) {
+async function deleteById(req: Request, id: string) {
+  const query = {
+    id,
+  };
+
   // TODO validate query schema
   const QuerySchema = schema.object({
     id: schema.string().uuid().min(1),
   });
 
   // Fail Fast
-  const parsedQuery = QuerySchema.safeParse(req.query);
+  const parsedQuery = QuerySchema.safeParse(query);
   if (!parsedQuery.success) {
-    return res.status(400).json({
-      error: {
-        message: `You must to provide a valid id`,
-      },
-    });
+    return new Response(
+      JSON.stringify({
+        error: {
+          message: `You must to provide a valid id`,
+        },
+      }),
+      {
+        status: 400,
+      }
+    );
   }
 
   try {
     const todoId = parsedQuery.data.id;
     await todoRepository.deleteById(todoId);
-    res.status(204).end();
+    return new Response(null, { status: 204 });
   } catch (error) {
     if (error instanceof HttpNotFoundError) {
-      res.status(error.status).json({
-        error: {
-          message: error.message,
-        },
-      });
+      return new Response(
+        JSON.stringify({
+          error: {
+            message: error.message,
+          },
+        }),
+        {
+          status: error.status,
+        }
+      );
     }
-    res.status(500).json({
-      error: {
-        message: `Internal server error`,
-      },
-    });
+    return new Response(
+      JSON.stringify({
+        error: {
+          message: `Internal server error`,
+        },
+      }),
+      {
+        status: 500,
+      }
+    );
   }
 }
 
