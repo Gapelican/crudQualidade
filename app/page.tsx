@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { GlobalStyles } from "@ui/theme/GlobalStyles";
 import { todoController } from "@ui/controller/todo";
@@ -148,7 +149,7 @@ function HomePage() {
                   <td>{todo.id.substring(0, 4)}</td>
                   <td>
                     {!todo.done && todo.content}
-                    {todo.done && <s>todo.content</s>}
+                    {todo.done && <s>{todo.content}</s>}
                   </td>
                   <td align="right">
                     <button
