@@ -61,7 +61,7 @@ export async function createByContent(content: string): Promise<Todo> {
 async function toggleDone(todoId: string): Promise<Todo> {
   const response = await fetch(
     //`http://localhost:3000/api/todos/${todoId}/toggle-done`,
-    `https://crud-phi-sepia.vercel.app/${todoId}/toggle-done`,
+    `https://crud-phi-sepia.vercel.app/api/todos/${todoId}/toggle-done`,
     { method: "PUT" }
   );
 
